@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import PropertyCard from "../components/PropertyCard";
+import "../styles/favorites.css";
 
 const Favorites = () => {
   const { user } = useAuth();
@@ -12,7 +13,7 @@ const Favorites = () => {
 
   useEffect(() => {
     if (!user) {
-      navigate("/login"); // Redirect unauthenticated users to login
+      navigate("/login");
       return;
     }
 
@@ -28,7 +29,7 @@ const Favorites = () => {
         );
         setFavorites(response.data);
       } catch (err) {
-        setError("Failed to fetch favorites.");
+        setError("Nem sikerült betölteni a kedvenceket.");
       }
     };
 
@@ -47,27 +48,27 @@ const Favorites = () => {
         prevFavorites.filter((fav) => fav.property_id !== propertyId)
       );
     } catch (err) {
-      console.error("Failed to remove favorite.");
+      console.error("Nem sikerült eltávolítani a kedvencek közül.");
     }
   };
 
   if (!user) {
-    return null; // Redirect happening
+    return null;
   }
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">My Favorites</h1>
-      {error && <p className="text-red-600">{error}</p>}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <main className="container">
+      <h1 className="title">Kedvenceim</h1>
+      {error && <p className="error-message">{error}</p>}
+      <div className="favorites-grid">
         {favorites.map((property) => (
-          <div key={property.property_id}>
+          <div key={property.property_id} className="favorite-card">
             <PropertyCard property={property} />
             <button
               onClick={() => handleUnfavorite(property.property_id)}
-              className="mt-2 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+              className="remove-button"
             >
-              Remove from Favorites
+              Eltávolítás a kedvencekből
             </button>
           </div>
         ))}

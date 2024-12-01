@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import "../styles/login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -21,46 +22,40 @@ const Login = () => {
         }
       );
       login(response.data.user);
-      navigate("/properties"); // Redirect to properties page
+      navigate("/properties");
     } catch (err) {
-      setError("Invalid email or password.");
+      setError("Helytelen email vagy jelszó.");
     }
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-md w-96">
-        <h1 className="text-2xl font-bold mb-6">Login</h1>
-        {error && <p className="text-red-600 mb-4">{error}</p>}
+    <main className="login-container">
+      <div className="login-box">
+        <h1 className="login-title">Bejelentkezés</h1>
+        {error && <p className="login-error">{error}</p>}
         <form onSubmit={handleSubmit}>
           <input
             type="email"
             placeholder="Email"
-            className="w-full mb-4 px-4 py-2 border rounded-md"
+            className="login-input"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
           <input
             type="password"
-            placeholder="Password"
-            className="w-full mb-4 px-4 py-2 border rounded-md"
+            placeholder="Jelszó"
+            className="login-input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button
-            type="submit"
-            className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-          >
-            Login
+          <button type="submit" className="login-button">
+            Bejelentkezés
           </button>
         </form>
-        <p className="text-sm text-gray-500 mt-4">
-          Don't have an account?{" "}
-          <a href="/register" className="text-blue-600 hover:underline">
-            Register
-          </a>
+        <p className="login-footer">
+          Nincs még fiókod? <a href="/register">Regisztráció</a>
         </p>
       </div>
     </main>

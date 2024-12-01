@@ -1,57 +1,46 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import "../styles/header.css";
 
 const Header = () => {
   const { user, logout } = useAuth();
 
   return (
-    <header className="bg-gray-800 text-white">
-      <nav className="container mx-auto flex justify-between items-center py-4">
-        <h1 className="text-xl font-bold">
-          <Link to="/">Real Estate App</Link>
+    <header>
+      <nav>
+        <h1>
+          <Link to="/">Ingatlan Alkalmazás</Link>
         </h1>
-        <ul className="flex space-x-4">
+        <ul>
           <li>
-            <Link to="/" className="hover:underline">
-              Properties
-            </Link>
+            <Link to="/">Ingatlanok</Link>
           </li>
           {user && (
             <>
               <li>
-                <Link to="/favorites" className="hover:underline">
-                  Favorites
-                </Link>
+                <Link to="/favorites">Kedvencek</Link>
               </li>
               {user.role === "admin" && (
                 <li>
-                  <Link to="/admin" className="hover:underline">
-                    Admin Panel
-                  </Link>
+                  <Link to="/admin">Admin Panel</Link>
                 </li>
               )}
               <li>
-                <button onClick={logout} className="hover:underline">
-                  Logout
-                </button>
+                <button onClick={logout}>Kijelentkezés</button>
               </li>
               <li>
-                <span className="font-semibold">{user.full_name}</span>
+                <span>{user.full_name}</span>
               </li>
             </>
           )}
           {!user && (
             <>
               <li>
-                <Link to="/login" className="hover:underline">
-                  Login
-                </Link>
+                <Link to="/login">Bejelentkezés</Link>
               </li>
               <li>
-                <Link to="/register" className="hover:underline">
-                  Register
-                </Link>
+                <Link to="/register">Regisztráció</Link>
               </li>
             </>
           )}

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "../styles/register.css";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -17,22 +18,22 @@ const Register = () => {
         password,
         full_name: fullName,
       });
-      navigate("/login"); // Redirect to login page
+      navigate("/login");
     } catch (err) {
-      setError("Failed to register. Please try again.");
+      setError("A regisztráció sikertelen. Kérjük, próbálja újra.");
     }
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-md w-96">
-        <h1 className="text-2xl font-bold mb-6">Register</h1>
-        {error && <p className="text-red-600 mb-4">{error}</p>}
+    <main className="register-container">
+      <div className="register-box">
+        <h1 className="register-title">Regisztráció</h1>
+        {error && <p className="register-error">{error}</p>}
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            placeholder="Full Name"
-            className="w-full mb-4 px-4 py-2 border rounded-md"
+            placeholder="Teljes név"
+            className="register-input"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             required
@@ -40,31 +41,25 @@ const Register = () => {
           <input
             type="email"
             placeholder="Email"
-            className="w-full mb-4 px-4 py-2 border rounded-md"
+            className="register-input"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
           <input
             type="password"
-            placeholder="Password"
-            className="w-full mb-4 px-4 py-2 border rounded-md"
+            placeholder="Jelszó"
+            className="register-input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button
-            type="submit"
-            className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-          >
-            Register
+          <button type="submit" className="register-button">
+            Regisztráció
           </button>
         </form>
-        <p className="text-sm text-gray-500 mt-4">
-          Already have an account?{" "}
-          <a href="/login" className="text-blue-600 hover:underline">
-            Login
-          </a>
+        <p className="register-footer">
+          Már van fiókod? <a href="/login">Bejelentkezés</a>
         </p>
       </div>
     </main>

@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setUser(response.data); // Ensure full user details, including role, are set
+        setUser(response.data);
       } catch (err) {
         console.error("Failed to authenticate user:", err);
         localStorage.removeItem("token");

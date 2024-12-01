@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
-import { useEffect } from "react";
+import "../styles/propertyDetail.css";
 
 const PropertyDetail = () => {
   const { id } = useParams();
@@ -38,7 +38,7 @@ const PropertyDetail = () => {
 
         setLoading(false);
       } catch (err) {
-        setError("Failed to fetch property details.");
+        setError("Nem sikerült betölteni az ingatlan adatait.");
         setLoading(false);
       }
     };
@@ -48,7 +48,7 @@ const PropertyDetail = () => {
 
   const handleFavoriteToggle = async () => {
     if (!user) {
-      setError("You must be logged in to favorite this property.");
+      setError("Be kell jelentkezned, hogy kedvencekhez add az ingatlant.");
       return;
     }
 
@@ -73,36 +73,38 @@ const PropertyDetail = () => {
 
       setIsFavorite(!isFavorite);
     } catch (err) {
-      setError("Failed to update favorite status.");
+      setError("Nem sikerült frissíteni a kedvencek állapotát.");
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div>Betöltés...</div>;
   if (error) return <div>{error}</div>;
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <Link to="/properties" className="text-blue-600 hover:underline">
-        &larr; Back to Properties
+    <main className="container">
+      <Link to="/" className="back-link">
+        &larr; Vissza az ingatlanokhoz
       </Link>
-      <div className="bg-white shadow-md rounded-lg overflow-hidden mt-6">
-        <div className="p-6">
-          <h1 className="text-3xl font-bold text-gray-800">{property.title}</h1>
-          <p className="text-lg text-gray-500">{property.city}</p>
-          <p className="text-gray-700 mt-4">{property.description}</p>
-          <div className="mt-6">
-            <p className="text-xl text-blue-600 font-bold">{`$${property.price}`}</p>
-            <p className="text-gray-600">{`Type: ${property.property_type}`}</p>
-            <p className="text-gray-600">{`Size: ${property.size} m²`}</p>
-            <p className="text-gray-600">{`Rooms: ${property.rooms}`}</p>
+      <div className="property-card">
+        <div className="property-content">
+          <h1 className="property-title">{property.title}</h1>
+          <p className="property-city">{property.city}</p>
+          <p className="property-description">{property.description}</p>
+          <div className="property-details">
+            <p className="property-price">{`$${property.price}`}</p>
+            <p>{`Típus: ${property.property_type}`}</p>
+            <p>{`Méret: ${property.size} m²`}</p>
+            <p>{`Szobák: ${property.rooms}`}</p>
           </div>
           <button
             onClick={handleFavoriteToggle}
-            className={`mt-4 px-4 py-2 rounded-md ${
-              isFavorite ? "bg-red-600 text-white" : "bg-gray-200 text-gray-700"
+            className={`favorite-button ${
+              isFavorite ? "favorite" : "not-favorite"
             }`}
           >
-            {isFavorite ? "Unfavorite" : "Favorite"}
+            {isFavorite
+              ? "Eltávolítás a kedvencekből"
+              : "Hozzáadás a kedvencekhez"}
           </button>
         </div>
       </div>

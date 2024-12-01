@@ -1,27 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
+import "../styles/propertyCard.css";
 
-const PropertyCard = ({ property, isFavorite, onFavoriteToggle }) => {
+const PropertyCard = ({ property }) => {
   return (
-    <div className="bg-white shadow-md rounded-lg overflow-hidden">
-      <div className="p-4">
-        <h2 className="text-lg font-bold text-gray-800">{property.title}</h2>
-        <p className="text-sm text-gray-500">{property.city}</p>
-        <p className="text-gray-700 text-sm mt-2">
+    <div className="property-card">
+      <div className="property-card-content">
+        <h2 className="property-title">{property.title}</h2>
+        <p className="property-city">{property.city}</p>
+        <p className="property-description">
           {property.description.length > 100
             ? `${property.description.substring(0, 100)}...`
             : property.description}
         </p>
-        <div className="mt-4 flex justify-between items-center">
-          <span className="text-blue-600 font-bold">{`$${property.price}`}</span>
-          <span className="text-gray-500">{`${property.size} m²`}</span>
+        <div className="property-details">
+          <span className="property-price">{`$${property.price}`}</span>
+          <span className="property-size">{`${property.size} m²`}</span>
         </div>
-        <div className="mt-4 flex justify-between items-center">
+        <div className="property-details">
           <Link
             to={`/properties/${property.property_id}`}
-            className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            className="property-link"
           >
-            View Details
+            Részletek megtekintése
           </Link>
         </div>
       </div>

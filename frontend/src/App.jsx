@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Header from "./components/Header";
-import Footer from "./components/Footer";
 import Properties from "./pages/Properties";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -23,7 +22,6 @@ const App = () => {
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/admin" element={<AdminPanel />} />
         </Routes>
-        <Footer />
       </Router>
     </AuthProvider>
   );

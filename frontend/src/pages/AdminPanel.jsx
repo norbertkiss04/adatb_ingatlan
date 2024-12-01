@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import "../styles/adminPanel.css";
 
 const AdminPanel = () => {
   const { user } = useAuth();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [propertyType, setPropertyType] = useState("Haz");
+  const [propertyType, setPropertyType] = useState("Ház");
   const [size, setSize] = useState("");
   const [rooms, setRooms] = useState("");
   const [city, setCity] = useState("");
@@ -22,7 +23,7 @@ const AdminPanel = () => {
         const response = await axios.get("http://localhost:3000/api/features");
         setFeatures(response.data);
       } catch (err) {
-        console.error("Failed to fetch features:", err);
+        console.error("Nem sikerült betölteni a jellemzőket:", err);
       }
     };
 
@@ -60,7 +61,6 @@ const AdminPanel = () => {
 
       const propertyId = propertyResponse.data.property_id;
 
-      // Assign selected features to the property
       await Promise.all(
         selectedFeatures.map((featureId) =>
           axios.post(
@@ -75,10 +75,10 @@ const AdminPanel = () => {
         )
       );
 
-      setMessage("Property added successfully!");
+      setMessage("Az ingatlan sikeresen hozzá lett adva!");
     } catch (err) {
       console.error(err);
-      setMessage("Failed to add property.");
+      setMessage("Nem sikerült hozzáadni az ingatlant.");
     }
   };
 
@@ -94,63 +94,60 @@ const AdminPanel = () => {
           },
         }
       );
-      setMessage("Feature added successfully!");
+      setMessage("A jellemző sikeresen hozzá lett adva!");
     } catch (err) {
       console.error(err);
-      setMessage("Failed to add feature.");
+      setMessage("Nem sikerült hozzáadni a jellemzőt.");
     }
   };
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Admin Panel</h1>
-      {message && <p className="mb-4 text-green-600">{message}</p>}
-      <section className="mb-8">
-        <h2 className="text-xl font-bold mb-4">Add New Property</h2>
-        <form onSubmit={handleAddProperty} className="space-y-4">
+    <main className="container">
+      <h1 className="title">Admin Panel</h1>
+      {message && <p className="message">{message}</p>}
+      <section className="form-section">
+        <h2 className="section-title">Új ingatlan hozzáadása</h2>
+        <form onSubmit={handleAddProperty} className="form">
           <input
             type="text"
-            placeholder="Title"
-            className="w-full px-4 py-2 border rounded-md"
+            placeholder="Cím"
+            className="input"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
           />
           <textarea
-            placeholder="Description"
-            className="w-full px-4 py-2 border rounded-md"
+            placeholder="Leírás"
+            className="textarea"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
-            <div className="flex items-center space-x-2">
-              <span className="text-gray-500">$</span>
-              <input
-                type="number"
-                placeholder="Price"
-                className="w-full px-4 py-2 border rounded-md"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                min="0"
-                max="9999"
-                required
-              />
-            </div>
+          <div className="grid">
+            <input
+              type="number"
+              placeholder="Ár"
+              className="input"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              min="0"
+              max="9999"
+              required
+            />
             <select
-              className="w-full px-4 py-2 border rounded-md"
+              className="select"
               value={propertyType}
               onChange={(e) => setPropertyType(e.target.value)}
               required
             >
-              <option value="Haz">Haz</option>
+              <option value="Ház">Ház</option>
               <option value="Apartman">Apartman</option>
               <option value="Iroda">Iroda</option>
             </select>
             <input
               type="number"
-              placeholder="Rooms"
-              className="w-full px-4 py-2 border rounded-md"
+              placeholder="Szobák"
+              className="input"
               value={rooms}
               onChange={(e) => setRooms(e.target.value)}
               min="1"
@@ -159,29 +156,26 @@ const AdminPanel = () => {
             />
             <input
               type="text"
-              placeholder="City"
-              className="w-full px-4 py-2 border rounded-md"
+              placeholder="Város"
+              className="input"
               value={city}
               onChange={(e) => setCity(e.target.value)}
               required
             />
             <input
               type="number"
-              placeholder="Size"
-              className="w-full px-4 py-2 border rounded-md"
+              placeholder="Méret (m²)"
+              className="input"
               value={size}
               onChange={(e) => setSize(e.target.value)}
               required
             />
           </div>
           <div>
-            <h3 className="text-lg font-bold mb-2">Select Features</h3>
-            <div className="flex flex-wrap gap-4">
+            <h3 className="section-title">Jellemzők kiválasztása</h3>
+            <div className="checkbox-group">
               {features.map((feature) => (
-                <label
-                  key={feature.feature_id}
-                  className="flex items-center space-x-2"
-                >
+                <label key={feature.feature_id} className="checkbox-label">
                   <input
                     type="checkbox"
                     value={feature.feature_id}
@@ -193,30 +187,24 @@ const AdminPanel = () => {
               ))}
             </div>
           </div>
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-          >
-            Add Property
+          <button type="submit" className="button">
+            Ingatlan hozzáadása
           </button>
         </form>
       </section>
       <section>
-        <h2 className="text-xl font-bold mb-4">Add New Feature</h2>
-        <form onSubmit={handleAddFeature} className="space-y-4">
+        <h2 className="section-title">Új jellemző hozzáadása</h2>
+        <form onSubmit={handleAddFeature} className="form">
           <input
             type="text"
-            placeholder="Feature Name"
-            className="w-full px-4 py-2 border rounded-md"
+            placeholder="Jellemző neve"
+            className="input"
             value={featureName}
             onChange={(e) => setFeatureName(e.target.value)}
             required
           />
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-          >
-            Add Feature
+          <button type="submit" className="button">
+            Jellemző hozzáadása
           </button>
         </form>
       </section>
