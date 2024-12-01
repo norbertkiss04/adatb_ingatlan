@@ -56,8 +56,23 @@ const loginUser = async (req, res) => {
 
 const getUserDetails = async (req, res) => {
   try {
-    const { user_id, full_name, email, isAdmin } = req.user;
-    res.json({ user_id, full_name, email, role: isAdmin ? "admin" : "user" });
+    const { user_id } = req.user;
+    const [rows] = await db.query("SELECT * FROM users WHERE user_id = ?", [
+      user_id,
+    ]);
+
+    if (rows.length === 0) {
+      return res.status(404).send("User not found.");
+    }
+
+    const user = rows[0];
+
+    res.json({
+      user_id: user.user_id,
+      full_name: user.full_name,
+      email: user.email,
+      role: user.isAdmin ? "admin" : "user",
+    });
   } catch (err) {
     console.error(err);
     res.status(500).send("Failed to fetch user details.");
