@@ -74,7 +74,35 @@ const unassignFeature = async (req, res) => {
   }
 };
 
+const updateFeatures = async (req, res) => {
+  const { property_id, feature_ids } = req.body;
+
+  if (!property_id || !Array.isArray(feature_ids)) {
+    return res.status(400).send("Hiányzó vagy hibás adatok.");
+  }
+
+  try {
+    await db.query("DELETE FROM property_features WHERE property_id = ?", [
+      property_id,
+    ]);
+
+    if (feature_ids.length > 0) {
+      const featureValues = feature_ids.map((id) => [property_id, id]);
+      await db.query(
+        "INSERT INTO property_features (property_id, feature_id) VALUES ?",
+        [featureValues]
+      );
+    }
+
+    res.send("Tulajdonságok sikeresen frissítve.");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Hiba történt a tulajdonságok frissítése során.");
+  }
+};
+
 module.exports = {
+  updateFeatures,
   listFeatures,
   addFeature,
   assignFeature,

@@ -22,7 +22,7 @@ const Login = () => {
         }
       );
       login(response.data.user);
-      navigate("/properties");
+      navigate("/");
     } catch (err) {
       setError("Helytelen email vagy jelszó.");
     }

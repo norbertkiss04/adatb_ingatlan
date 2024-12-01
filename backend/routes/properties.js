@@ -20,5 +20,11 @@ router.delete(
   authorizeRoles("admin"),
   propertiesController.deleteProperty
 );
+router.put(
+  "/:id",
+  authenticateToken,
+  authorizeRoles("admin"),
+  propertiesController.updateProperty
+);
 
 module.exports = router;

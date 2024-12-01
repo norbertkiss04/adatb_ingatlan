@@ -38,14 +38,14 @@ const getPropertyDetails = async (req, res) => {
     const property = propertyRows[0];
 
     const [features] = await db.query(
-      `SELECT f.feature_name 
+      `SELECT f.feature_id, f.feature_name 
              FROM property_features pf 
              JOIN features f ON pf.feature_id = f.feature_id 
              WHERE pf.property_id = ?`,
       [id]
     );
 
-    property.features = features.map((feature) => feature.feature_name);
+    property.features = features;
 
     res.json(property);
   } catch (err) {
@@ -76,9 +76,33 @@ const deleteProperty = async (req, res) => {
   }
 };
 
+const updateProperty = async (req, res) => {
+  const { id } = req.params;
+  const { title, description, price, property_type, size, rooms, city } =
+    req.body;
+  try {
+    const [result] = await db.query(
+      `UPDATE properties 
+       SET title = ?, description = ?, price = ?, property_type = ?, size = ?, rooms = ?, city = ? 
+       WHERE property_id = ?`,
+      [title, description, price, property_type, size, rooms, city, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send("Ingatlan nem található.");
+    }
+
+    res.send("Ingatlan sikeresen frissítve.");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Hiba történt az ingatlan frissítése során.");
+  }
+};
+
 module.exports = {
   getAllProperties,
   addProperty,
   getPropertyDetails,
   deleteProperty,
+  updateProperty,
 };

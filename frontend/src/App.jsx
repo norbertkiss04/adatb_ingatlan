@@ -8,6 +8,7 @@ import Register from "./pages/Register";
 import PropertyDetail from "./pages/PropertyDetail";
 import Favorites from "./pages/Favorites";
 import AdminPanel from "./pages/AdminPanel";
+import EditProperty from "./components/EditProperty";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/properties/edit/:id" element={<EditProperty />} />
         </Routes>
       </Router>
     </AuthProvider>

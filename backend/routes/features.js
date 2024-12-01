@@ -27,4 +27,11 @@ router.delete(
   featuresController.unassignFeature
 );
 
+router.post(
+  "/update",
+  authenticateToken,
+  authorizeRoles("admin"),
+  featuresController.updateFeatures
+);
+
 module.exports = router;
